@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [],
+        "steps": [
+            {
+                "name": "siteConfig",
+                "label": "Site Config",
+                "elements": [
+                    {
+                        "name": "sites_NEXUSe2e_name",
+                        "label": "Sites Name",
+                        "type": "Microsoft.Common.TextBox",
+                        "toolTip": "Use only allowed characters",
+                        "multiLine": false,
+                        "constraints": {
+                            "required": true,
+                            "validations": [
+                                {
+                                    "regex": "^[a-z0-9A-Z]{1,30}$",
+                                    "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "tags",
+                "label": "Tags",
+                "elements": [
+                    {
+                        "name": "tagsByResource",
+                        "type": "Microsoft.Common.TagsByResource",
+                        "resources": [
+                            "Microsoft.Web/serverfarms",
+                            "Microsoft.Web/sites"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "sites_NEXUSe2e_name": "[steps('siteConfig').sites_NEXUSe2e_name]"
+        }
+    }
+}
