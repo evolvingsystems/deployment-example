@@ -222,18 +222,26 @@
                 "siteName": "NEXUSe2e",
                 "hostNameType": "Verified"
             }
-        },
+        },        
         {
-            "type": "Microsoft.Web/sites/extensions",
-            "apiVersion": "2022-09-01",
-            "name": "[concat(parameters('sites_NEXUSe2e_name'), '/', 'onedeploy')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_NEXUSe2e_name'))]"
-            ],
+            "type": "Microsoft.Resources/deploymentScripts",
+            "apiVersion": "2020-10-01",
+            "name": "runPowerShellInline",
+            "location": "[resourceGroup().location]",
+            "kind": "AzurePowerShell",
             "properties": {
-                "packageUri": "[variables('zipUrl')]"
+            "azPowerShellVersion": "9.7",
+            "scriptContent": "Publish-AzWebApp -ResourceGroupName isvaznexuse2e -Name NEXUSe2e -ArchivePath demo-0.0.1-SNAPSHOT.jar -Type Jar -Restart",
+            "timeout": "PT30M",
+            "cleanupPreference": "OnSuccess",
+            "retentionInterval": "P1D"
             }
-        }
+        } 
+
+        
+
+        
     ]
 
 }
+
