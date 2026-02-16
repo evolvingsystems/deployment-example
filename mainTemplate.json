@@ -231,7 +231,7 @@
             "kind": "AzurePowerShell",
             "properties": {
             "azPowerShellVersion": "9.7",
-            "scriptContent": "Publish-AzWebApp -ResourceGroupName isvaznexuse2e -Name NEXUSe2e -ArchivePath demo-0.0.1-SNAPSHOT.jar -Type Jar -Restart",
+            "scriptContent": "Publish-AzWebApp -ResourceGroupName isvaznexuse2e -Name NEXUSe2e -ArchivePath demo-0.0.1-SNAPSHOT.jar",
             "timeout": "PT30M",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D"
@@ -244,4 +244,5 @@
     ]
 
 }
+
 
