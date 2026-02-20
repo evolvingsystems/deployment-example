@@ -232,8 +232,8 @@
             "kind": "AzureCLI",
             "properties": {
                 "azCliVersion": "2.83.0",
-                "scriptContent": "az webapp deploy --resource-group 'isvtesttest1' --name 'NEXUSe2e' --src-url ",
-                "arguments": "[variables('zipUrl')]",
+                "scriptContent": "az webapp deploy",
+                "arguments": "[concat(' --resource-group ',resourceGroup().name, ' --name ',parameters('sites_NEXUSe2e_name'), ' --src-url ' ,variables('zipUrl'))]",
                 "timeout": "PT30M",
                 "cleanupPreference": "OnSuccess",
                 "retentionInterval": "P1D"
@@ -241,6 +241,7 @@
         }
     ]
 }
+
 
 
 
