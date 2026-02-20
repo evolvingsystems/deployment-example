@@ -33,6 +33,7 @@
                 "elements": [
                     {
                         "name": "tagsByResource",
+                        "toolTip": "Add tags to your resources. Tags added here will be applied to all resources created by this template.",
                         "type": "Microsoft.Common.TagsByResource",
                         "resources": [
                             "Microsoft.Web/serverfarms",
@@ -43,7 +44,8 @@
             }
         ],
         "outputs": {
-            "sites_NEXUSe2e_name": "[steps('siteConfig').sites_NEXUSe2e_name]"
+            "sites_NEXUSe2e_name": "[steps('siteConfig').sites_NEXUSe2e_name]",
+            "location": "[location()]"
         }
     }
 }
