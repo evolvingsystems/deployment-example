@@ -109,7 +109,7 @@
                     "alwaysOn": false,
                     "http20Enabled": false,
                     "functionAppScaleLimit": 0,
-                    "minimumElasticInstanceCount": 1,
+                    "minimumElasticInstanceCount": 1
                 },
                 "scmSiteAlsoStopped": false,
                 "clientAffinityEnabled": false,
