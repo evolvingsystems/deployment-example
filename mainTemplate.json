@@ -232,7 +232,7 @@
             "kind": "AzureCLI",
             "properties": {
                 "azCliVersion": "2.82.0",
-                "scriptContent": "[concat('az webapp deploy --resource-group ',resourceGroup().name, ' --name ',parameters('sites_NEXUSe2e_name'), ' --src-url ' ,variables('zipUrl'))]",
+                "scriptContent": "[concat('az webapp deploy --type jar --resource-group ',resourceGroup().name, ' --name ',parameters('sites_NEXUSe2e_name'), ' --src-url ' ,variables('zipUrl'))]",
                 "arguments": "",
                 "timeout": "PT30M",
                 "cleanupPreference": "OnSuccess",
@@ -241,6 +241,7 @@
         }
     ]
 }
+
 
 
 
