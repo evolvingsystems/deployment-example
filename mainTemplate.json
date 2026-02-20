@@ -10,6 +10,13 @@
             "defaultValue": "ASP-NEXUSe2e-bc4b",
             "type": "String"
         },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "The region where resources will be deployed."
+            },
+            "type": "String"
+        },
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -33,7 +40,7 @@
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2024-11-01",
             "name": "[parameters('serverfarms_ASP_NEXUSe2e_bc4b_name')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "sku": {
                 "name": "B2",
                 "tier": "Basic",
@@ -61,7 +68,7 @@
             "type": "Microsoft.Web/sites",
             "apiVersion": "2024-11-01",
             "name": "[parameters('sites_NEXUSe2e_name')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_NEXUSe2e_bc4b_name'))]"
             ],
@@ -74,12 +81,12 @@
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "NEXUSe2e.azurewebsites.net",
+                        "name": "[concat(parameters('sites_NEXUSe2e_name'), '.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Standard"
                     },
                     {
-                        "name": "NEXUSe2e.scm.azurewebsites.net",
+                        "name": "[concat(parameters('sites_NEXUSe2e_name'), '.scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Repository"
                     }
@@ -88,7 +95,6 @@
                 "reserved": true,
                 "isXenon": false,
                 "hyperV": false,
-                "dnsConfiguration": {},
                 "outboundVnetRouting": {
                     "allTraffic": false,
                     "applicationTraffic": false,
@@ -104,7 +110,6 @@
                     "http20Enabled": false,
                     "functionAppScaleLimit": 0,
                     "minimumElasticInstanceCount": 1,
-                    "appSettings": []
                 },
                 "scmSiteAlsoStopped": false,
                 "clientAffinityEnabled": false,
@@ -113,7 +118,6 @@
                 "clientCertMode": "OptionalInteractiveUser",
                 "hostNamesDisabled": false,
                 "ipMode": "IPv4",
-                "customDomainVerificationId": "A2AB664BEDCAE72801E2A108130C0C36F7437D53780FC3F6C8961CC53C2E3C42",
                 "containerSize": 0,
                 "dailyMemoryTimeQuota": 0,
                 "httpsOnly": true,
@@ -129,7 +133,7 @@
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2024-11-01",
             "name": "[concat(parameters('sites_NEXUSe2e_name'), '/web')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('sites_NEXUSe2e_name'))]"
             ],
@@ -169,9 +173,6 @@
                     }
                 ],
                 "loadBalancing": "LeastRequests",
-                "experiments": {
-                    "rampUpRules": []
-                },
                 "autoHealEnabled": false,
                 "vnetRouteAllEnabled": false,
                 "vnetPrivatePortsCount": 0,
@@ -214,35 +215,29 @@
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2024-11-01",
             "name": "[concat(parameters('sites_NEXUSe2e_name'), '/', parameters('sites_NEXUSe2e_name'), '.azurewebsites.net')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('sites_NEXUSe2e_name'))]"
             ],
             "properties": {
-                "siteName": "NEXUSe2e",
+                "siteName": "[parameters('sites_NEXUSe2e_name')]",
                 "hostNameType": "Verified"
             }
-        },        
+        },
         {
             "type": "Microsoft.Resources/deploymentScripts",
-            "apiVersion": "2020-10-01",
-            "name": "runPowerShellInline",
-            "location": "[resourceGroup().location]",
-            "kind": "AzurePowerShell",
+            "apiVersion": "2023-08-01",
+            "name": "deployOurJavaCode",
+            "location": "[parameters('location')]",
+            "kind": "AzureCli",
             "properties": {
-            "azPowerShellVersion": "9.7",
-            "scriptContent": "Publish-AzWebApp -ResourceGroupName isvaznexuse2e -Name NEXUSe2e -ArchivePath demo-0.0.1-SNAPSHOT.jar",
-            "timeout": "PT30M",
-            "cleanupPreference": "OnSuccess",
-            "retentionInterval": "P1D"
+                "azCliVersion": "2.0.80",
+                "scriptContent": "az webapp deploy --resource-group {0} --name {1} --src-url {2}",
+                "arguments": "[resourceGroup().name,parameters('sites_NEXUSe2e_name'),variables('zipUrl')]",
+                "timeout": "PT30M",
+                "cleanupPreference": "OnSuccess",
+                "retentionInterval": "P1D"
             }
-        } 
-
-        
-
-        
+        }
     ]
-
 }
-
-
