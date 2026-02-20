@@ -229,7 +229,7 @@
             "apiVersion": "2023-08-01",
             "name": "deployOurJavaCode",
             "location": "[parameters('location')]",
-            "kind": "AzureCli",
+            "kind": "AzureCLI",
             "properties": {
                 "azCliVersion": "2.0.80",
                 "scriptContent": "az webapp deploy",
@@ -241,6 +241,7 @@
         }
     ]
 }
+
 
 
 
